@@ -79,7 +79,7 @@ class SuertresPageState extends State<SuertresPage> {
                               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                               textStyle: const TextStyle(fontSize: 18),
                             ),
-                            child: const Text('Generate Suertres Numbers', style: TextStyle(color: Colors.black),),
+                            child: const Text('Generate Suertres Numbers', style: TextStyle(color: Colors.white),),
                           ),
                           const SizedBox(height: 20),
                           if (_generatedNumbers.isNotEmpty)
