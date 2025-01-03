@@ -72,6 +72,11 @@ class _SixFiftyEightPageState extends State<SixFiftyEightPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          Image.asset(
+                            'assets/icons/658.png', // Make sure to add your logo image in the assets folder and update the path accordingly
+                            height: 100,
+                          ),
+                          const SizedBox(height: 20),
                           ElevatedButton(
                             onPressed: _generateNumbers,
                             style: ElevatedButton.styleFrom(
