@@ -15,93 +15,106 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Menu', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.yellowAccent.shade100,
+        backgroundColor: Colors.yellow,
         elevation: 5,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Column(
-          children: [
-            const Text(
-              'Category',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 3,
-                padding: const EdgeInsets.all(5.0), // Add padding around the grid
-                children: List.generate(6, (index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0), // Add padding around each card
-                    child: GestureDetector(
-                      onTap: () {
-                        // Navigate to different pages based on index
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => getPage(index)),
-                        );
-                      },
-                      child: Card(
-                        elevation: 4.0,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              getImagePath(index), // Use different images
-                              width: 50.0,
-                              height: 50.0,
-                            ),
-                            const SizedBox(height: 8.0),
-                            Text(getLabel(index)), // Use different labels
-                          ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.blue.withOpacity(0.5),
+              Colors.yellow.withOpacity(0.5),
+              Colors.red.withOpacity(0.5),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Column(
+            children: [
+              const Text(
+                'Category',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              Expanded(
+                child: GridView.count(
+                  crossAxisCount: 3,
+                  padding: const EdgeInsets.all(5.0), // Add padding around the grid
+                  children: List.generate(6, (index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(5.0), // Add padding around each card
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigate to different pages based on index
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => getPage(index)),
+                          );
+                        },
+                        child: Card(
+                          elevation: 4.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                getImagePath(index), // Use different images
+                                width: 50.0,
+                                height: 50.0,
+                              ),
+                              const SizedBox(height: 8.0),
+                              Text(getLabel(index)), // Use different labels
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }),
+                    );
+                  }),
+                ),
               ),
-            ),
-            const Divider(),
-            const Text(
-              'Lucky Pick',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 3,
-                padding: const EdgeInsets.all(5.0), // Add padding around the grid
-                children: List.generate(6, (index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0), // Add padding around each card
-                    child: GestureDetector(
-                      onTap: () {
-                        // Navigate to different pages based on index
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => getPage(index + 6)),
-                        );
-                      },
-                      child: Card(
-                        elevation: 4.0,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              getImagePath(index + 6), // Use different images
-                              width: 50.0,
-                              height: 50.0,
-                            ),
-                            const SizedBox(height: 8.0),
-                            Text(getLabel(index + 6)), // Use different labels
-                          ],
+              const Divider(),
+              const Text(
+                'Lucky Pick',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              Expanded(
+                child: GridView.count(
+                  crossAxisCount: 3,
+                  padding: const EdgeInsets.all(5.0), // Add padding around the grid
+                  children: List.generate(6, (index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(5.0), // Add padding around each card
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigate to different pages based on index
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => getPage(index + 6)),
+                          );
+                        },
+                        child: Card(
+                          elevation: 4.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                getImagePath(index + 6), // Use different images
+                                width: 50.0,
+                                height: 50.0,
+                              ),
+                              const SizedBox(height: 8.0),
+                              Text(getLabel(index + 6)), // Use different labels
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }),
+                    );
+                  }),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
