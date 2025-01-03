@@ -175,15 +175,15 @@ class HomeScreen extends StatelessWidget {
       case 5:
         return 'SuerTres';
       case 6:
-        return 'Generate';
+        return '6/42';
       case 7:
-        return 'Generate';
+        return '6/45';
       case 8:
-        return 'Generate';
+        return '6/49';
       case 9:
-        return 'Generate';
+        return '6/55';
       case 10:
-        return 'Generate';
+        return '6/58';
       default:
         return 'SuerTres';
     }
