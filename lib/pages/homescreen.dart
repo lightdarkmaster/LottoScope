@@ -22,9 +22,9 @@ class HomeScreen extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.blue.withOpacity(0.5),
-              Colors.yellow.withOpacity(0.5),
-              Colors.red.withOpacity(0.5),
+              Colors.blue.withOpacity(0.1),
+              Colors.yellow.withOpacity(0.1),
+              Colors.red.withOpacity(0.1),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
