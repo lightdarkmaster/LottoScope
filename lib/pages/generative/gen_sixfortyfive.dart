@@ -168,6 +168,18 @@ class _SixFortyFivePageState extends State<SixFortyFivePage> {
                     ),
                   ),
                 ),
+              const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                    textStyle: const TextStyle(fontSize: 18),
+                  ),
+                  child: const Text('Back', style: TextStyle(color: Colors.black)),
+                ),
               ],
             ),
           ),

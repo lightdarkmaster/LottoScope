@@ -101,11 +101,11 @@ class _SixFiftyFivePageState extends State<SixFiftyFivePage> {
                                       scrollDirection: Axis.horizontal,
                                       child: Text(
                                         _generatedNumbers.join(', '),
-                                        style: const TextStyle(fontSize: 23, color: Colors.red),
+                                        style: const TextStyle(fontSize: 23, color: Colors.black),
                                       ),
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.copy, color: Colors.red),
+                                      icon: const Icon(Icons.copy, color: Colors.black),
                                       onPressed: () => _copyToClipboard(_generatedNumbers.join(', ')),
                                     ),
                                   ],
@@ -150,12 +150,12 @@ class _SixFiftyFivePageState extends State<SixFiftyFivePage> {
                                         scrollDirection: Axis.horizontal,
                                         child: Text(
                                           numbers,
-                                          style: const TextStyle(fontSize: 18, color: Colors.red),
+                                          style: const TextStyle(fontSize: 18, color: Colors.black),
                                         ),
                                       ),
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.copy, color: Colors.red),
+                                      icon: const Icon(Icons.copy, color: Colors.black),
                                       onPressed: () => _copyToClipboard(numbers),
                                     ),
                                   ],
@@ -167,6 +167,18 @@ class _SixFiftyFivePageState extends State<SixFiftyFivePage> {
                       ),
                     ),
                   ),
+                ),
+              const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.amber,
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                    textStyle: const TextStyle(fontSize: 18),
+                  ),
+                  child: const Text('Back', style: TextStyle(color: Colors.black)),
                 ),
               ],
             ),
