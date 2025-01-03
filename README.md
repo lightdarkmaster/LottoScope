@@ -11,7 +11,7 @@ A simple mobile base application for recording lotto results and lucky number pi
 - 📝 **Lucky Pick**: generate your lucky numbers if you don't have numbers in your mind yet.
 
 ## Getting Started 🚀
-1. Download the app from the in github.
+1. Download the app in github.
 2. Open LottoScope and start adding your lotto results.
 3. Use the search and filter options to find specific draws or analyze trends.
 
