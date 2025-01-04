@@ -5,7 +5,8 @@ class NotesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notes'),
+        title: const Text('Notes', style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.amber,
       ),
       body: Center(
         child: Text('This is the Notes Page'),

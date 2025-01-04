@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_lotto/pages/about.dart';
 import 'package:my_lotto/pages/calendar';
 import 'package:my_lotto/pages/generative/gen_sixfiftyeight.dart';
 import 'package:my_lotto/pages/generative/gen_sixfiftyfive.dart';
@@ -6,6 +7,7 @@ import 'package:my_lotto/pages/generative/gen_sixfortyfive.dart';
 import 'package:my_lotto/pages/generative/gen_sixfortynine.dart';
 import 'package:my_lotto/pages/generative/gen_sixfortytwo.dart';
 import 'package:my_lotto/pages/generative/gen_suertres.dart';
+import 'package:my_lotto/pages/generative/lotto_results_today.dart';
 import 'package:my_lotto/pages/notes.dart';
 import 'package:my_lotto/pages/sixfortytwo.dart';
 
@@ -15,72 +17,125 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('LottoScope', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.yellow,
-        elevation: 5,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(56.0),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              'assets/icons/appHeader.jpg',
+              fit: BoxFit.cover,
+            ),
+            AppBar(
+              title: const Text('LottoScope', style: TextStyle(color: Colors.black)),
+              backgroundColor: Colors.transparent,
+              elevation: 5,
+            ),
+          ],
+        ),
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-        const DrawerHeader(
-          decoration: BoxDecoration(
-            color: Colors.yellow,
-          ),
-          child: Text(
-            'Menu',
-            style: TextStyle(color: Colors.black, fontSize: 24),
-          ),
-        ),
-        ListTile(
-          leading: Image.asset('assets/icons/pcsologo.png', width: 24, height: 24),
-          title: const Text(
-            'Home',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: () {
-            Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-            );
-          },
-          shape: const Border(
-            bottom: BorderSide(color: Colors.grey),
-          ),
-        ),
-        ListTile(
-          leading: Image.asset('assets/icons/notes.png', width: 24, height: 24),
-          title: const Text(
-            'Notes',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: () {
-            Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => NotesPage()),
-            );
-          },
-          shape: const Border(
-            bottom: BorderSide(color: Colors.grey),
-          ),
-        ),
-        ListTile(
-          leading: Image.asset('assets/icons/calendar.png', width: 24, height: 24),
-          title: const Text(
-            'Calendar',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          onTap: () {
-            Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CalendarPage()),
-            );
-          },
-          shape: const Border(
-            bottom: BorderSide(color: Colors.grey),
-          ),
-        ),
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.yellow,
+                image: DecorationImage(
+                  image: AssetImage('assets/icons/header.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: SizedBox.shrink(), // Add an empty child
+            ),
+            ListTile(
+              leading: Image.asset('assets/icons/pcsologo.png', width: 24, height: 24),
+              title: const Text(
+                'Home',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                );
+              },
+              shape: const Border(
+                bottom: BorderSide(color: Colors.grey),
+              ),
+            ),
+            ListTile(
+              leading: Image.asset('assets/icons/notes.png', width: 24, height: 24),
+              title: const Text(
+                'Notes',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotesPage()),
+                );
+              },
+              shape: const Border(
+                bottom: BorderSide(color: Colors.grey),
+              ),
+            ),
+            ListTile(
+              leading: Image.asset('assets/icons/calendar.png', width: 24, height: 24),
+              title: const Text(
+                'Calendar',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CalendarPage()),
+                );
+              },
+              shape: const Border(
+                bottom: BorderSide(color: Colors.grey),
+              ),
+            ),
+            ListTile(
+              leading: Image.asset('assets/icons/result.png', width: 24, height: 24),
+              title: const Text(
+                'Lotto Results',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LottoResultsToday()),
+                );
+              },
+              shape: const Border(
+                bottom: BorderSide(color: Colors.grey),
+              ),
+            ),
+            ListTile(
+              leading: Image.asset('assets/icons/about.png', width: 24, height: 24),
+              title: const Text(
+                'About',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AboutPage()),
+                );
+              },
+              shape: const Border(
+                bottom: BorderSide(color: Colors.grey),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                '© 2025 LottoScope. All rights reserved.',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         ),
       ),
