@@ -15,8 +15,8 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Calendar', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.teal,
+        title: Text('My Calendar', style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.yellow,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
