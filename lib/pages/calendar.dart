@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends StatefulWidget {
+  const CalendarPage({super.key});
+
   @override
   _CalendarPageState createState() => _CalendarPageState();
 }
@@ -15,7 +17,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Calendar', style: TextStyle(color: Colors.black)),
+        title: const Text('My Calendar', style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.yellow,
       ),
       body: Padding(
@@ -53,7 +55,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   onPageChanged: (focusedDay) {
                     _focusedDay = focusedDay;
                   },
-                  calendarStyle: CalendarStyle(
+                  calendarStyle: const CalendarStyle(
                     todayDecoration: BoxDecoration(
                       color: Colors.teal,
                       shape: BoxShape.circle,
@@ -63,7 +65,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       shape: BoxShape.circle,
                     ),
                   ),
-                  headerStyle: HeaderStyle(
+                  headerStyle: const HeaderStyle(
                     formatButtonVisible: false,
                     titleCentered: true,
                     titleTextStyle: TextStyle(
