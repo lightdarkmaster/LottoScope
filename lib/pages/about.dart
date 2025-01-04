@@ -21,7 +21,7 @@ class AboutPage extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'My Lotto is a simple and user-friendly application that helps you manage and track your lottery tickets. '
+              'LottoScope is a simple and user-friendly application that helps you manage and track your lottery tickets. '
               'With this app, you can easily check the latest lottery results, save your favorite numbers, and get notifications for upcoming draws.',
               style: TextStyle(fontSize: 16),
             ),
