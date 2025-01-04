@@ -48,7 +48,7 @@ class _SixFiftyEightPageState extends State<SixFiftyEightPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('6/58 Generator'),
+        title: const Text('6/58 Lucky Pick'),
         backgroundColor: Colors.orange,
       ),
       body: SingleChildScrollView(
@@ -83,8 +83,9 @@ class _SixFiftyEightPageState extends State<SixFiftyEightPage> {
                               backgroundColor: Colors.orange,
                               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                               textStyle: const TextStyle(fontSize: 18),
+                              side: const BorderSide(color: Colors.black, width: 1),
                             ),
-                            child: const Text('Generate 6/58 Numbers', style: TextStyle(color: Colors.black),),
+                            child: const Text('Lucky Pick 6/58 Numbers', style: TextStyle(color: Colors.black),),
                           ),
                           const SizedBox(height: 20),
                           if (_generatedNumbers.isNotEmpty)
@@ -102,7 +103,7 @@ class _SixFiftyEightPageState extends State<SixFiftyEightPage> {
                                       scrollDirection: Axis.horizontal,
                                       child: Text(
                                         _generatedNumbers.join(', '),
-                                        style: const TextStyle(fontSize: 23, color: Colors.red),
+                                        style: const TextStyle(fontSize: 24, color: Colors.red),
                                       ),
                                     ),
                                     IconButton(
@@ -151,7 +152,7 @@ class _SixFiftyEightPageState extends State<SixFiftyEightPage> {
                                         scrollDirection: Axis.horizontal,
                                         child: Text(
                                           numbers,
-                                          style: const TextStyle(fontSize: 18, color: Colors.red),
+                                          style: const TextStyle(fontSize: 24, color: Colors.red),
                                         ),
                                       ),
                                     ),
@@ -178,6 +179,7 @@ class _SixFiftyEightPageState extends State<SixFiftyEightPage> {
                     backgroundColor: Colors.orange,
                     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                     textStyle: const TextStyle(fontSize: 18),
+                    side: const BorderSide(color: Colors.black, width: 1),
                   ),
                   child: const Text('Back', style: TextStyle(color: Colors.black)),
                 ),

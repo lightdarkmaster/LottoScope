@@ -48,7 +48,7 @@ class SuertresPageState extends State<SuertresPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Suertres Generator'),
+        title: const Text('Lucky Pick Suertres', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.red,
       ),
       body: SingleChildScrollView(
@@ -82,8 +82,9 @@ class SuertresPageState extends State<SuertresPage> {
                               backgroundColor: Colors.red,
                               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                               textStyle: const TextStyle(fontSize: 18),
+                              side: const BorderSide(color: Colors.black, width: 1),
                             ),
-                            child: const Text('Generate Suertres Numbers', style: TextStyle(color: Colors.white),),
+                            child: const Text('Lucky Pick Suertres Numbers', style: TextStyle(color: Colors.white),),
                           ),
                           const SizedBox(height: 20),
                           if (_generatedNumbers.isNotEmpty)
@@ -101,7 +102,7 @@ class SuertresPageState extends State<SuertresPage> {
                                       scrollDirection: Axis.horizontal,
                                       child: Text(
                                         _generatedNumbers.join(', '),
-                                        style: const TextStyle(fontSize: 23, color: Colors.red),
+                                        style: const TextStyle(fontSize: 24, color: Colors.red),
                                       ),
                                     ),
                                     IconButton(
@@ -150,7 +151,7 @@ class SuertresPageState extends State<SuertresPage> {
                                         scrollDirection: Axis.horizontal,
                                         child: Text(
                                           numbers,
-                                          style: const TextStyle(fontSize: 18, color: Colors.red),
+                                          style: const TextStyle(fontSize: 24, color: Colors.red),
                                         ),
                                       ),
                                     ),
@@ -177,8 +178,9 @@ class SuertresPageState extends State<SuertresPage> {
                     backgroundColor: Colors.red,
                     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                     textStyle: const TextStyle(fontSize: 18),
+                    side: const BorderSide(color: Colors.black, width: 1),
                   ),
-                  child: const Text('Back', style: TextStyle(color: Colors.black)),
+                  child: const Text('Back', style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),

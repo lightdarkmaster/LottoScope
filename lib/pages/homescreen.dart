@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Menu', style: TextStyle(color: Colors.black)),
+        title: const Text('LottoScope', style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.yellow,
         elevation: 5,
       ),
