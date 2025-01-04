@@ -69,6 +69,8 @@ flutter:
     - assets/icons/658.png
     - assets/icons/pcsologo.png
     - assets/icons/3d.png
+    - assets/icons/calendar.png
+    - assets/icons/notes.png
 
   #   - images/a_dot_ham.jpeg
 

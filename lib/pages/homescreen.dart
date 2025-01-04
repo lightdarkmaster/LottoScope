@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:my_lotto/pages/calendar';
 import 'package:my_lotto/pages/generative/gen_sixfiftyeight.dart';
 import 'package:my_lotto/pages/generative/gen_sixfiftyfive.dart';
 import 'package:my_lotto/pages/generative/gen_sixfortyfive.dart';
 import 'package:my_lotto/pages/generative/gen_sixfortynine.dart';
 import 'package:my_lotto/pages/generative/gen_sixfortytwo.dart';
 import 'package:my_lotto/pages/generative/gen_suertres.dart';
+import 'package:my_lotto/pages/notes.dart';
 import 'package:my_lotto/pages/sixfortytwo.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,6 +19,70 @@ class HomeScreen extends StatelessWidget {
         title: const Text('LottoScope', style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.yellow,
         elevation: 5,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+        const DrawerHeader(
+          decoration: BoxDecoration(
+            color: Colors.yellow,
+          ),
+          child: Text(
+            'Menu',
+            style: TextStyle(color: Colors.black, fontSize: 24),
+          ),
+        ),
+        ListTile(
+          leading: Image.asset('assets/icons/pcsologo.png', width: 24, height: 24),
+          title: const Text(
+            'Home',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          onTap: () {
+            Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          },
+          shape: const Border(
+            bottom: BorderSide(color: Colors.grey),
+          ),
+        ),
+        ListTile(
+          leading: Image.asset('assets/icons/notes.png', width: 24, height: 24),
+          title: const Text(
+            'Notes',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          onTap: () {
+            Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => NotesPage()),
+            );
+          },
+          shape: const Border(
+            bottom: BorderSide(color: Colors.grey),
+          ),
+        ),
+        ListTile(
+          leading: Image.asset('assets/icons/calendar.png', width: 24, height: 24),
+          title: const Text(
+            'Calendar',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          onTap: () {
+            Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CalendarPage()),
+            );
+          },
+          shape: const Border(
+            bottom: BorderSide(color: Colors.grey),
+          ),
+        ),
+          ],
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
