@@ -48,7 +48,7 @@ class _SixFortyTwoPageState extends State<SixFortyTwoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('6/42 Generator'),
+        title: const Text('Lucky Pick 6/42', style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.teal,
       ),
       body: SingleChildScrollView(
@@ -82,8 +82,9 @@ class _SixFortyTwoPageState extends State<SixFortyTwoPage> {
                               backgroundColor: Colors.teal,
                               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                               textStyle: const TextStyle(fontSize: 18),
+                              side: const BorderSide(color: Colors.black, width: 1),
                             ),
-                            child: const Text('Generate 6/42 Numbers', style: TextStyle(color: Colors.white),),
+                            child: const Text('Lucky Pick 6/42 Numbers', style: TextStyle(color: Colors.white),),
                           ),
                           const SizedBox(height: 20),
                           if (_generatedNumbers.isNotEmpty)
@@ -101,7 +102,7 @@ class _SixFortyTwoPageState extends State<SixFortyTwoPage> {
                                       scrollDirection: Axis.horizontal,
                                       child: Text(
                                         _generatedNumbers.join(', '),
-                                        style: const TextStyle(fontSize: 23, color: Colors.teal),
+                                        style: const TextStyle(fontSize: 24, color: Colors.teal),
                                       ),
                                     ),
                                     IconButton(
@@ -150,7 +151,7 @@ class _SixFortyTwoPageState extends State<SixFortyTwoPage> {
                                         scrollDirection: Axis.horizontal,
                                         child: Text(
                                           numbers,
-                                          style: const TextStyle(fontSize: 18, color: Colors.teal),
+                                          style: const TextStyle(fontSize: 24, color: Colors.teal),
                                         ),
                                       ),
                                     ),
@@ -177,8 +178,10 @@ class _SixFortyTwoPageState extends State<SixFortyTwoPage> {
                     backgroundColor: Colors.teal,
                     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                     textStyle: const TextStyle(fontSize: 18),
+                    side: const BorderSide(color: Colors.black, width: 1),
+
                   ),
-                  child: const Text('Back', style: TextStyle(color: Colors.black)),
+                  child: const Text('Back', style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
