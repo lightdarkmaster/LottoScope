@@ -50,6 +50,12 @@ class _SixFortyTwoPageState extends State<SixFortyTwoPage> {
       appBar: AppBar(
         title: const Text('Lucky Pick 6/42', style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.teal,
+          leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: Center(

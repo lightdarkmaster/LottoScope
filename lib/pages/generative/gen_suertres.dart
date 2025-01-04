@@ -50,6 +50,12 @@ class SuertresPageState extends State<SuertresPage> {
       appBar: AppBar(
         title: const Text('Lucky Pick Suertres', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.red,
+          leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: Center(
