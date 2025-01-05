@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-
 class SixFortyTwo extends StatefulWidget {
   const SixFortyTwo({super.key});
 
@@ -11,9 +10,9 @@ class SixFortyTwo extends StatefulWidget {
 }
 
 class _SixFortyTwoState extends State<SixFortyTwo> {
-  final List<String> _numbers = List.filled(6, '');
   late Database _database;
   List<Map<String, dynamic>> _savedResults = [];
+  final TextEditingController _inputController = TextEditingController();
 
   @override
   void initState() {
@@ -31,10 +30,10 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
       },
       version: 1,
     );
+    _loadSavedResults();
   }
 
-  Future<void> _saveToDatabase() async {
-    final numbersString = _numbers.join(', ');
+  Future<void> _saveToDatabase(String numbersString) async {
     await _database.insert(
       'results',
       {'numbers': numbersString},
@@ -53,123 +52,201 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
     });
   }
 
-  void _showSavedResultsDialog() {
-    _loadSavedResults(); // Refresh results
-    showDialog(
-      context: context as BuildContext,
-      builder: (ctx) {
-        return AlertDialog(
-          title: const Text('Saved Lotto Results'),
-          content: _savedResults.isEmpty
-              ? const Text('No saved results found.')
-              : SizedBox(
-                  height: 200,
-                  width: double.maxFinite,
-                  child: ListView.builder(
+  Future<void> _deleteResult(int id) async {
+    await _database.delete(
+      'results',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    _loadSavedResults();
+  }
+
+  void _editResult(int id, String updatedNumbers) async {
+    await _database.update(
+      'results',
+      {'numbers': updatedNumbers},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    _loadSavedResults();
+  }
+
+  void _handleSave() {
+    final input = _inputController.text.trim();
+    final numbers = input.split(',').map((e) => e.trim()).toList();
+
+    if (numbers.length == 6 &&
+        numbers.every((number) =>
+            int.tryParse(number) != null &&
+            int.parse(number) >= 1 &&
+            int.parse(number) <= 42)) {
+      final numbersString = numbers.map((n) => n.padLeft(2, '0')).join(', ');
+      _saveToDatabase(numbersString);
+      _inputController.clear();
+    } else {
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        const SnackBar(
+          content: Text('Enter 6/42 Results'),
+        ),
+      );
+    }
+  }
+
+  void _formatInput(String value) {
+    String digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digitsOnly.length > 12) {
+      digitsOnly = digitsOnly.substring(0, 12);
+    }
+
+    String formatted = '';
+    for (int i = 0; i < digitsOnly.length; i += 2) {
+      if (i + 2 <= digitsOnly.length) {
+        formatted += digitsOnly.substring(i, i + 2);
+      } else {
+        formatted += digitsOnly.substring(i);
+      }
+      if (i + 2 < digitsOnly.length) {
+        formatted += ', ';
+      }
+    }
+
+    _inputController.value = TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: formatted.length),
+    );
+  }
+
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text(
+        '6/42 Lotto Results',
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: Colors.redAccent,
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Expanded(
+            child: _savedResults.isEmpty
+                ? const Center(child: Text('No saved results.'))
+                : ListView.builder(
                     itemCount: _savedResults.length,
                     itemBuilder: (context, index) {
                       final result = _savedResults[index];
-                      return ListTile(
-                        title: Text('Entry ${result['id']}: ${result['numbers']}'),
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(result['numbers']),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit, color: Colors.blue),
+                                  onPressed: () {
+                                    _inputController.text = result['numbers'];
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text('Edit Result'),
+                                          content: TextField(
+                                            controller: _inputController,
+                                            keyboardType: TextInputType.number,
+                                            onChanged: _formatInput,
+                                            decoration: const InputDecoration(
+                                                hintText: 'Edit numbers'),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                _editResult(
+                                                    result['id'],
+                                                    _inputController.text
+                                                        .trim());
+                                              },
+                                              child: const Text('Save'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('Cancel'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete, color: Colors.red),
+                                  onPressed: () => _deleteResult(result['id']),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Divider(
+                            height: 1.0,
+                            thickness: 1.0,
+                          ),
+                        ],
                       );
                     },
                   ),
-                ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context as BuildContext).pop();
-              },
-              child: const Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('6/42 Lotto Results', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.redAccent,
+          ),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Text(
-              'Enter 6 Two-Digit Numbers (01-42)',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16.0),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 6,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Number ${index + 1}',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        if (int.tryParse(value) != null &&
-                            int.parse(value) >= 1 &&
-                            int.parse(value) <= 42) {
-                          _numbers[index] = value.padLeft(2, '0');
-                        } else {
-                          _numbers[index] = '';
-                        }
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    if (_numbers.contains('')) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please enter all 6 numbers!')),
-                      );
-                    } else {
-                      _saveToDatabase();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.redAccent,
-                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                  ),
-                  child: const Text('Save', style: TextStyle(fontSize: 18)),
+    ),
+    floatingActionButton: FloatingActionButton(
+      backgroundColor: Colors.redAccent,
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Add 6/42 Lotto Result'),
+              content: TextField(
+                controller: _inputController,
+                keyboardType: TextInputType.number,
+                onChanged: _formatInput,
+                decoration: const InputDecoration(
+                  hintText: 'Example: 01, 12, 23, 34, 41, 42',
                 ),
-                ElevatedButton(
-                  onPressed: _showSavedResultsDialog,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
-                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                  ),
-                  child: const Text('View Saved', style: TextStyle(fontSize: 18)),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _handleSave();
+                  },
+                  child: const Text('Save'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _inputController.clear();
+                  },
+                  child: const Text('Cancel'),
                 ),
               ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+            );
+          },
+        );
+      },
+      child: const Icon(Icons.add, color: Colors.white),
+    ),
+  );
+}
+
 
   @override
   void dispose() {
+    _inputController.dispose();
     _database.close();
     super.dispose();
   }
