@@ -33,24 +33,33 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
     _loadSavedResults();
   }
 
-  Future<void> _saveToDatabase(String numbersString) async {
-    await _database.insert(
-      'results',
-      {'numbers': numbersString},
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-      const SnackBar(content: Text('Lotto numbers saved successfully!')),
-    );
-    _loadSavedResults();
-  }
+Future<void> _saveToDatabase(String numbersString) async {
+  // Insert data into the database and wait for completion
+  await _database.insert(
+    'results',
+    {'numbers': numbersString},
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
 
-  Future<void> _loadSavedResults() async {
-    final results = await _database.query('results');
-    setState(() {
-      _savedResults = results;
-    });
-  }
+  // Reload the saved results after saving the data
+  await _loadSavedResults();  // Wait for data reload before calling setState()
+
+  ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+    const SnackBar(content: Text('Lotto numbers saved successfully!')),
+  );
+}
+
+
+Future<void> _loadSavedResults() async {
+  // Query the saved results from the database
+  final results = await _database.query('results');
+  
+  // Update the UI with the fetched results by calling setState
+  setState(() {
+    _savedResults = results;
+  });
+}
+
 
   Future<void> _deleteResult(int id) async {
     await _database.delete(
@@ -202,44 +211,65 @@ Widget build(BuildContext context) {
         ],
       ),
     ),
-    floatingActionButton: FloatingActionButton(
-      backgroundColor: Colors.redAccent,
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Add 6/42 Lotto Result'),
-              content: TextField(
-                controller: _inputController,
-                keyboardType: TextInputType.number,
-                onChanged: _formatInput,
-                decoration: const InputDecoration(
-                  hintText: 'Example: 01, 12, 23, 34, 41, 42',
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    _handleSave();
-                  },
-                  child: const Text('Save'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    _inputController.clear();
-                  },
-                  child: const Text('Cancel'),
-                ),
-              ],
-            );
-          },
+floatingActionButton: FloatingActionButton(
+  backgroundColor: Colors.redAccent,
+  onPressed: () {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Add 6/42 Lotto Result'),
+          content: TextField(
+            controller: _inputController,
+            keyboardType: TextInputType.number,
+            onChanged: _formatInput,
+            decoration: const InputDecoration(
+              hintText: 'Example: 01, 12, 23, 34, 41, 42',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                final input = _inputController.text.trim();
+                final numbers = input.split(',').map((e) => e.trim()).toList();
+
+                if (numbers.length == 6 &&
+                    numbers.every((number) =>
+                        int.tryParse(number) != null &&
+                        int.parse(number) >= 1 &&
+                        int.parse(number) <= 42)) {
+                  final numbersString =
+                      numbers.map((n) => n.padLeft(2, '0')).join(', ');
+                  _saveToDatabase(numbersString).then((_) {
+                    _inputController.clear(); // Clear the input field
+                    _loadSavedResults(); // Reload results after saving
+                  });
+                  Navigator.of(context).pop(); // Close the dialog
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Enter 6 valid numbers between 1 and 42'),
+                    ),
+                  );
+                }
+              },
+              child: const Text('Save'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                _inputController.clear(); // Clear the input field
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
         );
       },
-      child: const Icon(Icons.add, color: Colors.white),
-    ),
+    );
+  },
+  child: const Icon(Icons.add, color: Colors.white),
+),
+
   );
 }
 
