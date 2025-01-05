@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-
 class SixFortyTwo extends StatefulWidget {
   const SixFortyTwo({super.key});
 
@@ -11,9 +10,9 @@ class SixFortyTwo extends StatefulWidget {
 }
 
 class _SixFortyTwoState extends State<SixFortyTwo> {
-  final List<String> _numbers = List.filled(6, '');
   late Database _database;
   List<Map<String, dynamic>> _savedResults = [];
+  final TextEditingController _inputController = TextEditingController();
 
   @override
   void initState() {
@@ -33,8 +32,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
     );
   }
 
-  Future<void> _saveToDatabase() async {
-    final numbersString = _numbers.join(', ');
+  Future<void> _saveToDatabase(String numbersString) async {
     await _database.insert(
       'results',
       {'numbers': numbersString},
@@ -54,10 +52,10 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
   }
 
   void _showSavedResultsDialog() {
-    _loadSavedResults(); // Refresh results
+    _loadSavedResults();
     showDialog(
       context: context as BuildContext,
-      builder: (ctx) {
+      builder: (context) {
         return AlertDialog(
           title: const Text('Saved Lotto Results'),
           content: _savedResults.isEmpty
@@ -78,7 +76,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context as BuildContext).pop();
+                Navigator.of(context).pop();
               },
               child: const Text('Close'),
             ),
@@ -87,6 +85,57 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
       },
     );
   }
+
+  void _handleSave() {
+    final input = _inputController.text.trim();
+    final numbers = input.split(',').map((e) => e.trim()).toList();
+
+    if (numbers.length == 6 &&
+        numbers.every((number) =>
+            int.tryParse(number) != null &&
+            int.parse(number) >= 1 &&
+            int.parse(number) <= 42)) {
+      final numbersString = numbers.map((n) => n.padLeft(2, '0')).join(', ');
+      _saveToDatabase(numbersString);
+      _inputController.clear();
+    } else {
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter 6 valid numbers (01-42) separated by commas.'),
+        ),
+      );
+    }
+  }
+
+void _formatInput(String value) {
+  // Remove any non-numeric characters and commas
+  String digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+
+  // Limit the input to 12 digits (6 two-digit numbers)
+  if (digitsOnly.length > 12) {
+    digitsOnly = digitsOnly.substring(0, 12);
+  }
+
+  // Format the input by adding commas every two digits
+  String formatted = '';
+  for (int i = 0; i < digitsOnly.length; i += 2) {
+    if (i + 2 <= digitsOnly.length) {
+      formatted += digitsOnly.substring(i, i + 2);
+    } else {
+      formatted += digitsOnly.substring(i);
+    }
+    if (i + 2 < digitsOnly.length) {
+      formatted += ', ';
+    }
+  }
+
+  // Update the TextField controller's text
+  _inputController.value = TextEditingValue(
+    text: formatted,
+    selection: TextSelection.collapsed(offset: formatted.length),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,36 +149,19 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
         child: Column(
           children: [
             const Text(
-              'Enter 6 Two-Digit Numbers (01-42)',
+              'Enter 6 Two-Digit Numbers (01-42) Automatically Separated by Commas',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16.0),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 6,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Number ${index + 1}',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        if (int.tryParse(value) != null &&
-                            int.parse(value) >= 1 &&
-                            int.parse(value) <= 42) {
-                          _numbers[index] = value.padLeft(2, '0');
-                        } else {
-                          _numbers[index] = '';
-                        }
-                      },
-                    ),
-                  );
-                },
+            TextField(
+              controller: _inputController,
+              keyboardType: TextInputType.number,
+              onChanged: _formatInput,
+              decoration: InputDecoration(
+                hintText: 'Example: 01, 12, 23, 34, 41, 42',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
               ),
             ),
             const SizedBox(height: 16.0),
@@ -137,15 +169,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    if (_numbers.contains('')) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please enter all 6 numbers!')),
-                      );
-                    } else {
-                      _saveToDatabase();
-                    }
-                  },
+                  onPressed: _handleSave,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.redAccent,
                     padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
@@ -170,6 +194,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
 
   @override
   void dispose() {
+    _inputController.dispose();
     _database.close();
     super.dispose();
   }
