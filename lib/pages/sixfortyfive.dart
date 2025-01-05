@@ -23,7 +23,7 @@ class _SixFortyFiveState extends State<SixFortyFive> {
 
   Future<void> _initializeDatabase() async {
     _database = await openDatabase(
-      join(await getDatabasesPath(), 'lotto_results.db'),
+      join(await getDatabasesPath(), 'lotto_results2.db'),
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE results(id INTEGER PRIMARY KEY, numbers TEXT)',
