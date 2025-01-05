@@ -30,6 +30,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
       },
       version: 1,
     );
+    _loadSavedResults();
   }
 
   Future<void> _saveToDatabase(String numbersString) async {
@@ -51,39 +52,23 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
     });
   }
 
-  void _showSavedResultsDialog() {
-    _loadSavedResults();
-    showDialog(
-      context: context as BuildContext,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Saved Lotto Results'),
-          content: _savedResults.isEmpty
-              ? const Text('No saved results found.')
-              : SizedBox(
-                  height: 200,
-                  width: double.maxFinite,
-                  child: ListView.builder(
-                    itemCount: _savedResults.length,
-                    itemBuilder: (context, index) {
-                      final result = _savedResults[index];
-                      return ListTile(
-                        title: Text('Entry ${result['id']}: ${result['numbers']}'),
-                      );
-                    },
-                  ),
-                ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            ),
-          ],
-        );
-      },
+  Future<void> _deleteResult(int id) async {
+    await _database.delete(
+      'results',
+      where: 'id = ?',
+      whereArgs: [id],
     );
+    _loadSavedResults();
+  }
+
+  void _editResult(int id, String updatedNumbers) async {
+    await _database.update(
+      'results',
+      {'numbers': updatedNumbers},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    _loadSavedResults();
   }
 
   void _handleSave() {
@@ -101,96 +86,163 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
     } else {
       ScaffoldMessenger.of(context as BuildContext).showSnackBar(
         const SnackBar(
-          content: Text('Please enter 6 valid numbers (01-42) separated by commas.'),
+          content: Text('Enter 6/42 Results'),
         ),
       );
     }
   }
 
-void _formatInput(String value) {
-  // Remove any non-numeric characters and commas
-  String digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+  void _formatInput(String value) {
+    String digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digitsOnly.length > 12) {
+      digitsOnly = digitsOnly.substring(0, 12);
+    }
 
-  // Limit the input to 12 digits (6 two-digit numbers)
-  if (digitsOnly.length > 12) {
-    digitsOnly = digitsOnly.substring(0, 12);
+    String formatted = '';
+    for (int i = 0; i < digitsOnly.length; i += 2) {
+      if (i + 2 <= digitsOnly.length) {
+        formatted += digitsOnly.substring(i, i + 2);
+      } else {
+        formatted += digitsOnly.substring(i);
+      }
+      if (i + 2 < digitsOnly.length) {
+        formatted += ', ';
+      }
+    }
+
+    _inputController.value = TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: formatted.length),
+    );
   }
 
-  // Format the input by adding commas every two digits
-  String formatted = '';
-  for (int i = 0; i < digitsOnly.length; i += 2) {
-    if (i + 2 <= digitsOnly.length) {
-      formatted += digitsOnly.substring(i, i + 2);
-    } else {
-      formatted += digitsOnly.substring(i);
-    }
-    if (i + 2 < digitsOnly.length) {
-      formatted += ', ';
-    }
-  }
-
-  // Update the TextField controller's text
-  _inputController.value = TextEditingValue(
-    text: formatted,
-    selection: TextSelection.collapsed(offset: formatted.length),
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text(
+        '6/42 Lotto Results',
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: Colors.redAccent,
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Expanded(
+            child: _savedResults.isEmpty
+                ? const Center(child: Text('No saved results.'))
+                : ListView.builder(
+                    itemCount: _savedResults.length,
+                    itemBuilder: (context, index) {
+                      final result = _savedResults[index];
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(result['numbers']),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit, color: Colors.blue),
+                                  onPressed: () {
+                                    _inputController.text = result['numbers'];
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text('Edit Result'),
+                                          content: TextField(
+                                            controller: _inputController,
+                                            keyboardType: TextInputType.number,
+                                            onChanged: _formatInput,
+                                            decoration: const InputDecoration(
+                                                hintText: 'Edit numbers'),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                _editResult(
+                                                    result['id'],
+                                                    _inputController.text
+                                                        .trim());
+                                              },
+                                              child: const Text('Save'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('Cancel'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete, color: Colors.red),
+                                  onPressed: () => _deleteResult(result['id']),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Divider(
+                            height: 1.0,
+                            thickness: 1.0,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
+    ),
+    floatingActionButton: FloatingActionButton(
+      backgroundColor: Colors.redAccent,
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Add 6/42 Lotto Result'),
+              content: TextField(
+                controller: _inputController,
+                keyboardType: TextInputType.number,
+                onChanged: _formatInput,
+                decoration: const InputDecoration(
+                  hintText: 'Example: 01, 12, 23, 34, 41, 42',
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _handleSave();
+                  },
+                  child: const Text('Save'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _inputController.clear();
+                  },
+                  child: const Text('Cancel'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: const Icon(Icons.add, color: Colors.white),
+    ),
   );
 }
 
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('6/42 Lotto Results', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.redAccent,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Text(
-              'Enter 6 Two-Digit Numbers (01-42) Automatically Separated by Commas',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _inputController,
-              keyboardType: TextInputType.number,
-              onChanged: _formatInput,
-              decoration: InputDecoration(
-                hintText: 'Example: 01, 12, 23, 34, 41, 42',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: _handleSave,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.redAccent,
-                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                  ),
-                  child: const Text('Save', style: TextStyle(fontSize: 18)),
-                ),
-                ElevatedButton(
-                  onPressed: _showSavedResultsDialog,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
-                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-                  ),
-                  child: const Text('View Saved', style: TextStyle(fontSize: 18)),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   void dispose() {
