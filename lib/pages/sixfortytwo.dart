@@ -33,33 +33,31 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
     _loadSavedResults();
   }
 
-Future<void> _saveToDatabase(String numbersString) async {
-  // Insert data into the database and wait for completion
-  await _database.insert(
-    'results',
-    {'numbers': numbersString},
-    conflictAlgorithm: ConflictAlgorithm.replace,
-  );
+  Future<void> _saveToDatabase(String numbersString) async {
+    // Insert data into the database and wait for completion
+    await _database.insert(
+      'results',
+      {'numbers': numbersString},
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
 
-  // Reload the saved results after saving the data
-  await _loadSavedResults();  // Wait for data reload before calling setState()
+    // Reload the saved results after saving the data
+    await _loadSavedResults(); // Wait for data reload before calling setState()
 
-  ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-    const SnackBar(content: Text('Lotto numbers saved successfully!')),
-  );
-}
+    ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+      const SnackBar(content: Text('Lotto numbers saved successfully!')),
+    );
+  }
 
+  Future<void> _loadSavedResults() async {
+    // Query the saved results from the database
+    final results = await _database.query('results');
 
-Future<void> _loadSavedResults() async {
-  // Query the saved results from the database
-  final results = await _database.query('results');
-  
-  // Update the UI with the fetched results by calling setState
-  setState(() {
-    _savedResults = results;
-  });
-}
-
+    // Update the UI with the fetched results by calling setState
+    setState(() {
+      _savedResults = results;
+    });
+  }
 
   Future<void> _deleteResult(int id) async {
     await _database.delete(
@@ -125,159 +123,166 @@ Future<void> _loadSavedResults() async {
     );
   }
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: const Text(
-        '6/42 Lotto Results',
-        style: TextStyle(color: Colors.white),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          '6/42 Lotto Results',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.redAccent,
       ),
-      backgroundColor: Colors.redAccent,
-    ),
-    body: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          Expanded(
-            child: _savedResults.isEmpty
-                ? const Center(child: Text('No saved results.'))
-                : ListView.builder(
-                    itemCount: _savedResults.length,
-                    itemBuilder: (context, index) {
-                      final result = _savedResults[index];
-                      return Column(
-                        children: [
-                          ListTile(
-                            title: Text(result['numbers']),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.edit, color: Colors.blue),
-                                  onPressed: () {
-                                    _inputController.text = result['numbers'];
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: const Text('Edit Result'),
-                                          content: TextField(
-                                            controller: _inputController,
-                                            keyboardType: TextInputType.number,
-                                            onChanged: _formatInput,
-                                            decoration: const InputDecoration(
-                                                hintText: 'Edit numbers'),
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                _editResult(
-                                                    result['id'],
-                                                    _inputController.text
-                                                        .trim());
-                                              },
-                                              child: const Text('Save'),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: _savedResults.isEmpty
+                  ? const Center(child: Text('No saved results.'))
+                  : ListView.builder(
+                      itemCount: _savedResults.length,
+                      itemBuilder: (context, index) {
+                        final result = _savedResults[index];
+                        return Column(
+                          children: [
+                            ListTile(
+                              title: Text(result['numbers']),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.edit,
+                                        color: Colors.blue),
+                                    onPressed: () {
+                                      _inputController.text = result['numbers'];
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Edit Result'),
+                                            content: TextField(
+                                              controller: _inputController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              onChanged: _formatInput,
+                                              decoration: const InputDecoration(
+                                                  hintText: 'Edit numbers'),
                                             ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('Cancel'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.delete, color: Colors.red),
-                                  onPressed: () => _deleteResult(result['id']),
-                                ),
-                              ],
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  _editResult(
+                                                      result['id'],
+                                                      _inputController.text
+                                                          .trim());
+                                                },
+                                                child: const Text('Save'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('Cancel'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete,
+                                        color: Colors.red),
+                                    onPressed: () =>
+                                        _deleteResult(result['id']),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          const Divider(
-                            height: 1.0,
-                            thickness: 1.0,
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-          ),
-        ],
-      ),
-    ),
-floatingActionButton: FloatingActionButton(
-  backgroundColor: Colors.redAccent,
-  onPressed: () {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Add 6/42 Lotto Result'),
-          content: TextField(
-            controller: _inputController,
-            keyboardType: TextInputType.number,
-            onChanged: _formatInput,
-            decoration: const InputDecoration(
-              hintText: 'Example: 01, 12, 23, 34, 41, 42',
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                final input = _inputController.text.trim();
-                final numbers = input.split(',').map((e) => e.trim()).toList();
-
-                if (numbers.length == 6 &&
-                    numbers.every((number) =>
-                        int.tryParse(number) != null &&
-                        int.parse(number) >= 1 &&
-                        int.parse(number) <= 42)) {
-                  final numbersString =
-                      numbers.map((n) => n.padLeft(2, '0')).join(', ');
-                  _saveToDatabase(numbersString).then((_) {
-                    _inputController.clear(); // Clear the input field
-                    _loadSavedResults(); // Reload results after saving
-                  });
-                  Navigator.of(context).pop(); // Close the dialog
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Enter 6 valid numbers between 1 and 42'),
+                            const Divider(
+                              height: 1.0,
+                              thickness: 1.0,
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                  );
-                }
-              },
-              child: const Text('Save'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                _inputController.clear(); // Clear the input field
-              },
-              child: const Text('Cancel'),
             ),
           ],
-        );
-      },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.redAccent,
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Add 6/42 Lotto Result'),
+                content: TextField(
+                  controller: _inputController,
+                  keyboardType: TextInputType.number,
+                  onChanged: _formatInput,
+                  decoration: const InputDecoration(
+                    hintText: 'Example: 01, 12, 23, 34, 41, 42',
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      final input = _inputController.text.trim();
+                      final numbers =
+                          input.split(',').map((e) => e.trim()).toList();
+
+                      if (numbers.length == 6 &&
+                          numbers.every((number) =>
+                              int.tryParse(number) != null &&
+                              int.parse(number) >= 1 &&
+                              int.parse(number) <= 42)) {
+                        final numbersString =
+                            numbers.map((n) => n.padLeft(2, '0')).join(', ');
+                        _saveToDatabase(numbersString).then((_) {
+                          _loadSavedResults(); // Reload results after saving
+                          _inputController
+                              .clear(); // Clear the input field after saving
+                        });
+                        Navigator.of(context)
+                            .pop(); // Close the dialog after saving
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text('Enter 6 valid numbers between 1 and 42'),
+                          ),
+                        );
+                      }
+                    },
+                    child: const Text('Save'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pop(); // Close the dialog if cancelled
+                      _inputController
+                          .clear(); // Clear the input field if cancelled
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
     );
-  },
-  child: const Icon(Icons.add, color: Colors.white),
-),
-
-  );
-}
-
+  }
 
   @override
   void dispose() {
     _inputController.dispose();
-    _database.close();
     super.dispose();
   }
 }
