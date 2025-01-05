@@ -213,69 +213,83 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.redAccent,
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Add 6/42 Lotto Result'),
-                content: TextField(
-                  controller: _inputController,
-                  keyboardType: TextInputType.number,
-                  onChanged: _formatInput,
-                  decoration: const InputDecoration(
-                    hintText: 'Example: 01, 12, 23, 34, 41, 42',
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      final input = _inputController.text.trim();
-                      final numbers =
-                          input.split(',').map((e) => e.trim()).toList();
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            backgroundColor: Colors.redAccent,
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Add 6/42 Lotto Result'),
+                    content: TextField(
+                      controller: _inputController,
+                      keyboardType: TextInputType.number,
+                      onChanged: _formatInput,
+                      decoration: const InputDecoration(
+                        hintText: 'Example: 01, 12, 23, 34, 41, 42',
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          final input = _inputController.text.trim();
+                          final numbers =
+                              input.split(',').map((e) => e.trim()).toList();
 
-                      if (numbers.length == 6 &&
-                          numbers.every((number) =>
-                              int.tryParse(number) != null &&
-                              int.parse(number) >= 1 &&
-                              int.parse(number) <= 42)) {
-                        final numbersString =
-                            numbers.map((n) => n.padLeft(2, '0')).join(', ');
-                        _saveToDatabase(numbersString).then((_) {
-                          _loadSavedResults(); // Reload results after saving
-                          _inputController
-                              .clear(); // Clear the input field after saving
-                        });
-                        Navigator.of(context)
-                            .pop(); // Close the dialog after saving
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content:
-                                Text('Enter 6 valid numbers between 1 and 42'),
-                          ),
-                        );
-                      }
-                    },
-                    child: const Text('Save'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pop(); // Close the dialog if cancelled
-                      _inputController
-                          .clear(); // Clear the input field if cancelled
-                    },
-                    child: const Text('Cancel'),
-                  ),
-                ],
+                          if (numbers.length == 6 &&
+                              numbers.every((number) =>
+                                  int.tryParse(number) != null &&
+                                  int.parse(number) >= 1 &&
+                                  int.parse(number) <= 42)) {
+                            final numbersString =
+                                numbers.map((n) => n.padLeft(2, '0')).join(', ');
+                            _saveToDatabase(numbersString).then((_) {
+                              _loadSavedResults(); // Reload results after saving
+                              _inputController.clear(); // Clear the input field after saving
+                            });
+                            Navigator.of(context)
+                                .pop(); // Close the dialog after saving
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text('Enter 6 valid numbers between 1 and 42'),
+                              ),
+                            );
+                          }
+                        },
+                        child: const Text('Save'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pop(); // Close the dialog if cancelled
+                          _inputController.clear(); // Clear the input field if cancelled
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                    ],
+                  );
+                },
               );
             },
-          );
-        },
-        child: const Icon(Icons.add, color: Colors.white),
+            child: const Icon(Icons.add, color: Colors.white),
+          ),
+          const SizedBox(width: 16), // Adds some space between buttons
+          FloatingActionButton(
+            backgroundColor: Colors.greenAccent,
+            onPressed: () {
+              // Your analyze button logic here
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Analyze button clicked')),
+              );
+            },
+            child: const Icon(Icons.bar_chart, color: Colors.white),
+          ),
+        ],
       ),
     );
   }
