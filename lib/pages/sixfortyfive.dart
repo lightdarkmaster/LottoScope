@@ -3,14 +3,14 @@ import 'package:my_lotto/pages/sixfortytwo_analysis.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SixFortyTwo extends StatefulWidget {
-  const SixFortyTwo({super.key});
+class SixFortyFive extends StatefulWidget {
+  const SixFortyFive({super.key});
 
   @override
-  _SixFortyTwoState createState() => _SixFortyTwoState();
+  _SixFortyFiveState createState() => _SixFortyFiveState();
 }
 
-class _SixFortyTwoState extends State<SixFortyTwo> {
+class _SixFortyFiveState extends State<SixFortyFive> {
   late Database _database;
   List<Map<String, dynamic>> _savedResults = [];
   final TextEditingController _inputController = TextEditingController();
@@ -199,38 +199,8 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
                                     IconButton(
                                       icon: const Icon(Icons.delete,
                                           color: Colors.red),
-                                      onPressed: () {
-                                        // Show confirmation dialog before deleting
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: const Text(
-                                                  'Confirm Deletion'),
-                                              content: const Text(
-                                                  'Are you sure you want to delete this result?'),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pop(); // Close the dialog without deleting
-                                                  },
-                                                  child: const Text('Cancel'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    _deleteResult(result[
-                                                        'id']); // Delete the result if confirmed
-                                                    Navigator.of(context)
-                                                        .pop(); // Close the dialog after deletion
-                                                  },
-                                                  child: const Text('Delete'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
+                                      onPressed: () =>
+                                          _deleteResult(result['id']),
                                     ),
                                   ],
                                 ),

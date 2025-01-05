@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NotesPage()),
+                  MaterialPageRoute(builder: (context) => const NotesPage()),
                 );
               },
               shape: const Border(
@@ -89,7 +89,7 @@ class HomeScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CalendarPage()),
+                  MaterialPageRoute(builder: (context) => const CalendarPage()),
                 );
               },
               shape: const Border(
@@ -121,7 +121,7 @@ class HomeScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AboutPage()),
+                  MaterialPageRoute(builder: (context) => const AboutPage()),
                 );
               },
               shape: const Border(
@@ -245,6 +245,8 @@ class HomeScreen extends StatelessWidget {
     // Return different pages based on index
     switch (index) {
       case 0:
+        return const SixFortyTwo();
+      case 1:
         return const SixFortyTwo();
       case 6:
         return const SixFortyTwoPage();
