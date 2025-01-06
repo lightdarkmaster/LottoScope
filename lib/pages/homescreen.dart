@@ -8,6 +8,7 @@ import 'package:my_lotto/pages/generative/gen_sixfortynine.dart';
 import 'package:my_lotto/pages/generative/gen_sixfortytwo.dart';
 import 'package:my_lotto/pages/generative/gen_suertres.dart';
 import 'package:my_lotto/pages/notes.dart';
+import 'package:my_lotto/pages/sixfiftyeight.dart';
 import 'package:my_lotto/pages/sixfiftyfive.dart';
 import 'package:my_lotto/pages/sixfortyfive.dart';
 import 'package:my_lotto/pages/sixfortynine.dart';
@@ -239,7 +240,7 @@ class HomeScreen extends StatelessWidget {
       case 3:
         return const SixFiftyFiveHome();
       case 4:
-        return const SixFortyTwo();
+        return const SixFiftyEightHome();
       case 5:
         return const SixFortyTwo();
       case 6:

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:my_lotto/pages/sixfortynine_analysis.dart';
-import 'package:my_lotto/pages/sixfortytwo_analysis.dart';
+import 'package:my_lotto/pages/sixfiftyeight_analysis.dart';
+import 'package:my_lotto/pages/sixfiftyfive_analysis.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SixFortyNineHome extends StatefulWidget {
-  const SixFortyNineHome({super.key});
+class SixFiftyEightHome extends StatefulWidget {
+  const SixFiftyEightHome({super.key});
 
   @override
-  _SixFortyNineHomeState createState() => _SixFortyNineHomeState();
+  _SixFiftyEightHomeState createState() => _SixFiftyEightHomeState();
 }
 
-class _SixFortyNineHomeState extends State<SixFortyNineHome> {
+class _SixFiftyEightHomeState extends State<SixFiftyEightHome> {
   late Database _database;
   List<Map<String, dynamic>> _savedResults = [];
   final TextEditingController _inputController = TextEditingController();
@@ -24,7 +24,7 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
 
   Future<void> _initializeDatabase() async {
     _database = await openDatabase(
-      join(await getDatabasesPath(), 'lotto_results_649.db'),
+      join(await getDatabasesPath(), 'lotto_results_658.db'),
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE results(id INTEGER PRIMARY KEY, numbers TEXT)',
@@ -130,10 +130,10 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
     return Scaffold(
         appBar: AppBar(
           title: const Text(
-            '6/49 Lotto Results',
+            '6/58 Lotto Results',
             style: TextStyle(color: Colors.black),
           ),
-          backgroundColor: Colors.yellow,
+          backgroundColor: Colors.orange,
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -258,7 +258,7 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: const Text('Add 6/42 Lotto Result'),
+                      title: const Text('Add 6/58 Lotto Result'),
                       content: TextField(
                         controller: _inputController,
                         keyboardType: TextInputType.number,
@@ -278,7 +278,7 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
                                 numbers.every((number) =>
                                     int.tryParse(number) != null &&
                                     int.parse(number) >= 1 &&
-                                    int.parse(number) <= 49)) {
+                                    int.parse(number) <= 58)) {
                               final numbersString = numbers
                                   .map((n) => n.padLeft(2, '0'))
                                   .join(', ');
@@ -293,7 +293,7 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                      'Enter 6 valid numbers between 1 and 49'),
+                                      'Enter 6 valid numbers between 1 and 42'),
                                 ),
                               );
                             }
@@ -359,7 +359,7 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        SixFortyNineAnalysisPage(analysisResult: analysisResult),
+                        SixFiftyEightAnalysisPage(analysisResult: analysisResult),
                   ),
                 );
               },
