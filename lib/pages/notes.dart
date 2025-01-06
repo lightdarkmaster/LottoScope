@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_lotto/pages/notes_details.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -92,8 +93,22 @@ class _NotesPageState extends State<NotesPage> {
                           ),
                           subtitle: Text(
                             note['content'],
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: const TextStyle(color: Colors.grey),
                           ),
+                          onTap: () {
+                            // Navigate to the NoteDetailPage
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NoteDetailPage(
+                                  title: note['title'],
+                                  content: note['content'],
+                                ),
+                              ),
+                            );
+                          },
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
