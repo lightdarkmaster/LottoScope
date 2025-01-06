@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SixFortyNineAnalysisPage extends StatelessWidget {
+class SixFiftyEightAnalysisPage extends StatelessWidget {
   final String analysisResult;
 
-  const SixFortyNineAnalysisPage({super.key, required this.analysisResult});
+  const SixFiftyEightAnalysisPage({super.key, required this.analysisResult});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Analysis Result'),
-        backgroundColor: Colors.yellow,
+        backgroundColor: Colors.amber,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -47,7 +47,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
 
   Future<void> _initializeDatabase() async {
     _database = await openDatabase(
-      join(await getDatabasesPath(), 'lotto_results_649.db'),
+      join(await getDatabasesPath(), 'lotto_results_658.db'),
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE results(id INTEGER PRIMARY KEY, numbers TEXT)',
@@ -104,7 +104,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('6/42 Lotto Results'),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.orange,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -221,7 +221,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
                               numbers.every((number) =>
                                   int.tryParse(number) != null &&
                                   int.parse(number) >= 1 &&
-                                  int.parse(number) <= 49)) {
+                                  int.parse(number) <= 42)) {
                             final numbersString = numbers
                                 .map((n) => n.padLeft(2, '0'))
                                 .join(', ');
@@ -293,7 +293,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      SixFortyNineAnalysisPage(analysisResult: analysisResult),
+                      SixFiftyEightAnalysisPage(analysisResult: analysisResult),
                 ),
               );
             },

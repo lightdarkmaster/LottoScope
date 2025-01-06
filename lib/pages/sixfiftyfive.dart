@@ -278,7 +278,7 @@ class _SixFiftyFiveHomeState extends State<SixFiftyFiveHome> {
                                 numbers.every((number) =>
                                     int.tryParse(number) != null &&
                                     int.parse(number) >= 1 &&
-                                    int.parse(number) <= 42)) {
+                                    int.parse(number) <= 55)) {
                               final numbersString = numbers
                                   .map((n) => n.padLeft(2, '0'))
                                   .join(', ');
@@ -293,7 +293,7 @@ class _SixFiftyFiveHomeState extends State<SixFiftyFiveHome> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                      'Enter 6 valid numbers between 1 and 42'),
+                                      'Enter 6 valid numbers between 1 and 55'),
                                 ),
                               );
                             }
