@@ -103,7 +103,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('6/42 Lotto Results'),
+        title: const Text('6/49 Lotto Results'),
         backgroundColor: Colors.redAccent,
       ),
       body: Padding(
@@ -201,13 +201,13 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: const Text('Add 6/42 Lotto Result'),
+                    title: const Text('Add 6/49 Lotto Result'),
                     content: TextField(
                       controller: _inputController,
                       keyboardType: TextInputType.number,
                       onChanged: _formatInput,
                       decoration: const InputDecoration(
-                        hintText: 'Example: 01, 12, 23, 34, 41, 42',
+                        hintText: 'Example: 01, 12, 23, 34, 41, 49',
                       ),
                     ),
                     actions: [
@@ -236,7 +236,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
-                                    'Enter 6 valid numbers between 1 and 42'),
+                                    'Enter 6 valid numbers between 1 and 49'),
                               ),
                             );
                           }

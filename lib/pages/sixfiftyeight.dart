@@ -337,7 +337,7 @@ class _SixFiftyEightHomeState extends State<SixFiftyEightHome> {
                         .where((e) =>
                             e != null &&
                             e >= 1 &&
-                            e <= 42) // Filter out invalid numbers
+                            e <= 58) // Filter out invalid numbers
                         .map((e) =>
                             e!) // Safely unwrap after filtering out nulls
                         .toList();
