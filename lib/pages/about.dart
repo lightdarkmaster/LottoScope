@@ -10,22 +10,19 @@ class AboutPage extends StatelessWidget {
         title: const Text('About'),
         backgroundColor: Colors.amber,
       ),
-      body: SingleChildScrollView(  // Wrap the body content in a SingleChildScrollView
+      body: SingleChildScrollView(
+        // Wrap the body content in a SingleChildScrollView
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,  // Justify the contents with space between
+            mainAxisAlignment: MainAxisAlignment
+                .spaceBetween, // Justify the contents with space between
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Circular Image (using local image)
-              const Center(
-                child: CircleAvatar(
-                  radius: 60,
-                  backgroundImage: AssetImage('assets/icons/pcsologo.png'), // Local image
-                ),
-              ),
+
               const SizedBox(height: 20),
-              
+
               // "About the App" Card
               Card(
                 elevation: 5,
@@ -37,9 +34,17 @@ class AboutPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const Center(
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundImage: AssetImage(
+                              'assets/icons/pcsologo.png'), // Local image
+                        ),
+                      ),
                       Text(
                         'About the App',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 10),
                       Text(
@@ -52,7 +57,7 @@ class AboutPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               // "About the Developer" Card
               Card(
                 elevation: 5,
@@ -67,13 +72,17 @@ class AboutPage extends StatelessWidget {
                       Center(
                         child: CircleAvatar(
                           radius: 60,
-                          backgroundImage: AssetImage('assets/icons/dev.jpg'), // Local image
+                          backgroundImage:
+                              AssetImage('assets/icons/dev.jpg'), // Local image
                         ),
                       ),
-                      SizedBox(height: 20),  // Add some space between the image and text
+                      SizedBox(
+                          height:
+                              20), // Add some space between the image and text
                       Text(
                         'About the Developer',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 10),
                       Text(
