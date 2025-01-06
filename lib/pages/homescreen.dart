@@ -7,8 +7,8 @@ import 'package:my_lotto/pages/generative/gen_sixfortyfive.dart';
 import 'package:my_lotto/pages/generative/gen_sixfortynine.dart';
 import 'package:my_lotto/pages/generative/gen_sixfortytwo.dart';
 import 'package:my_lotto/pages/generative/gen_suertres.dart';
-import 'package:my_lotto/pages/generative/lotto_results_today.dart';
 import 'package:my_lotto/pages/notes.dart';
+import 'package:my_lotto/pages/sixfiftyfive.dart';
 import 'package:my_lotto/pages/sixfortyfive.dart';
 import 'package:my_lotto/pages/sixfortynine.dart';
 import 'package:my_lotto/pages/sixfortytwo.dart';
@@ -92,22 +92,6 @@ class HomeScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const CalendarPage()),
-                );
-              },
-              shape: const Border(
-                bottom: BorderSide(color: Colors.grey),
-              ),
-            ),
-            ListTile(
-              leading: Image.asset('assets/icons/result.png', width: 24, height: 24),
-              title: const Text(
-                'Lotto Results',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LottoResultsToday()),
                 );
               },
               shape: const Border(
@@ -253,7 +237,7 @@ class HomeScreen extends StatelessWidget {
       case 2:
         return const SixFortyNineHome();
       case 3:
-        return const SixFortyTwo();
+        return const SixFiftyFiveHome();
       case 4:
         return const SixFortyTwo();
       case 5:
