@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_lotto/pages/sixfiftyfive_analysis.dart';
-import 'package:my_lotto/pages/sixfortytwo_analysis.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
