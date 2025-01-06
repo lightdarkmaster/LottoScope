@@ -103,7 +103,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('6/42 Lotto Results'),
+        title: const Text('6/45 Lotto Results'),
         backgroundColor: Colors.redAccent,
       ),
       body: Padding(
@@ -201,13 +201,13 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: const Text('Add 6/42 Lotto Result'),
+                    title: const Text('Add 6/45 Lotto Result'),
                     content: TextField(
                       controller: _inputController,
                       keyboardType: TextInputType.number,
                       onChanged: _formatInput,
                       decoration: const InputDecoration(
-                        hintText: 'Example: 01, 12, 23, 34, 41, 42',
+                        hintText: 'Example: 01, 12, 23, 34, 41, 45',
                       ),
                     ),
                     actions: [
@@ -221,7 +221,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
                               numbers.every((number) =>
                                   int.tryParse(number) != null &&
                                   int.parse(number) >= 1 &&
-                                  int.parse(number) <= 42)) {
+                                  int.parse(number) <= 45)) {
                             final numbersString = numbers
                                 .map((n) => n.padLeft(2, '0'))
                                 .join(', ');
@@ -236,7 +236,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
-                                    'Enter 6 valid numbers between 1 and 42'),
+                                    'Enter 6 valid numbers between 1 and 45'),
                               ),
                             );
                           }
@@ -274,7 +274,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
                   final numbers = numbersString
                       .split(',')
                       .map((e) => int.tryParse(e.trim()))
-                      .where((e) => e != null && e >= 1 && e <= 42)
+                      .where((e) => e != null && e >= 1 && e <= 45)
                       .map((e) => e!)
                       .toList();
 

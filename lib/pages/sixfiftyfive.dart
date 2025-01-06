@@ -258,7 +258,7 @@ class _SixFiftyFiveHomeState extends State<SixFiftyFiveHome> {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: const Text('Add 6/42 Lotto Result'),
+                      title: const Text('Add 6/55 Lotto Result'),
                       content: TextField(
                         controller: _inputController,
                         keyboardType: TextInputType.number,
@@ -337,7 +337,7 @@ class _SixFiftyFiveHomeState extends State<SixFiftyFiveHome> {
                         .where((e) =>
                             e != null &&
                             e >= 1 &&
-                            e <= 42) // Filter out invalid numbers
+                            e <= 55) // Filter out invalid numbers
                         .map((e) =>
                             e!) // Safely unwrap after filtering out nulls
                         .toList();
