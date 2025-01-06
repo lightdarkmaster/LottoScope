@@ -13,6 +13,7 @@ import 'package:my_lotto/pages/sixfiftyfive.dart';
 import 'package:my_lotto/pages/sixfortyfive.dart';
 import 'package:my_lotto/pages/sixfortynine.dart';
 import 'package:my_lotto/pages/sixfortytwo.dart';
+import 'package:my_lotto/pages/suertres.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -242,7 +243,7 @@ class HomeScreen extends StatelessWidget {
       case 4:
         return const SixFiftyEightHome();
       case 5:
-        return const SixFortyTwo();
+        return const SuertresHome();
       case 6:
         return const SixFortyTwoPage();
       case 7:

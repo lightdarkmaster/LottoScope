@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:my_lotto/pages/sixfortynine_analysis.dart';
+import 'package:my_lotto/pages/sixfortytwo_analysis.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SixFortyNineHome extends StatefulWidget {
-  const SixFortyNineHome({super.key});
+class SuertresHome extends StatefulWidget {
+  const SuertresHome({super.key});
 
   @override
-  _SixFortyNineHomeState createState() => _SixFortyNineHomeState();
+  _SuertresHomeState createState() => _SuertresHomeState();
 }
 
-class _SixFortyNineHomeState extends State<SixFortyNineHome> {
+class _SuertresHomeState extends State<SuertresHome> {
   late Database _database;
   List<Map<String, dynamic>> _savedResults = [];
   final TextEditingController _inputController = TextEditingController();
@@ -23,7 +23,7 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
 
   Future<void> _initializeDatabase() async {
     _database = await openDatabase(
-      join(await getDatabasesPath(), 'lotto_results_649.db'),
+      join(await getDatabasesPath(), 'lotto_results_suertres.db'),
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE results(id INTEGER PRIMARY KEY, numbers TEXT)',
@@ -83,11 +83,11 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
     final input = _inputController.text.trim();
     final numbers = input.split(',').map((e) => e.trim()).toList();
 
-    if (numbers.length == 6 &&
+    if (numbers.length == 1 &&
         numbers.every((number) =>
             int.tryParse(number) != null &&
             int.parse(number) >= 1 &&
-            int.parse(number) <= 42)) {
+            int.parse(number) <= 999)) {
       final numbersString = numbers.map((n) => n.padLeft(2, '0')).join(', ');
       _saveToDatabase(numbersString);
       _inputController.clear();
@@ -129,10 +129,10 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
     return Scaffold(
         appBar: AppBar(
           title: const Text(
-            '6/49 Lotto Results',
+            '6/42 Lotto Results',
             style: TextStyle(color: Colors.black),
           ),
-          backgroundColor: Colors.yellow,
+          backgroundColor: Colors.teal,
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -257,13 +257,13 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: const Text('Add 6/49 Lotto Result'),
+                      title: const Text('Add Suertres Lotto Result'),
                       content: TextField(
                         controller: _inputController,
                         keyboardType: TextInputType.number,
                         onChanged: _formatInput,
                         decoration: const InputDecoration(
-                          hintText: 'Example: 01, 12, 23, 34, 41, 42',
+                          hintText: 'Example: 022',
                         ),
                       ),
                       actions: [
@@ -273,11 +273,11 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
                             final numbers =
                                 input.split(',').map((e) => e.trim()).toList();
 
-                            if (numbers.length == 6 &&
+                            if (numbers.length == 1 &&
                                 numbers.every((number) =>
                                     int.tryParse(number) != null &&
                                     int.parse(number) >= 1 &&
-                                    int.parse(number) <= 49)) {
+                                    int.parse(number) <= 999)) {
                               final numbersString = numbers
                                   .map((n) => n.padLeft(2, '0'))
                                   .join(', ');
@@ -292,7 +292,7 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                      'Enter 6 valid numbers between 1 and 49'),
+                                      'Enter 6 valid numbers between 1 and 42'),
                                 ),
                               );
                             }
@@ -336,7 +336,7 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
                         .where((e) =>
                             e != null &&
                             e >= 1 &&
-                            e <= 49) // Filter out invalid numbers
+                            e <= 42) // Filter out invalid numbers
                         .map((e) =>
                             e!) // Safely unwrap after filtering out nulls
                         .toList();
@@ -358,7 +358,7 @@ class _SixFortyNineHomeState extends State<SixFortyNineHome> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        SixFortyNineAnalysisPage(analysisResult: analysisResult),
+                        AnalysisPage(analysisResult: analysisResult),
                   ),
                 );
               },
