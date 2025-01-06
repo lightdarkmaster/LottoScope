@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:my_lotto/pages/sixfortynine_analysis.dart';
 import 'package:my_lotto/pages/sixfortytwo_analysis.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SixFortyTwo extends StatefulWidget {
-  const SixFortyTwo({super.key});
+class SixFortyNineHome extends StatefulWidget {
+  const SixFortyNineHome({super.key});
 
   @override
-  _SixFortyTwoState createState() => _SixFortyTwoState();
+  _SixFortyNineHomeState createState() => _SixFortyNineHomeState();
 }
 
-class _SixFortyTwoState extends State<SixFortyTwo> {
+class _SixFortyNineHomeState extends State<SixFortyNineHome> {
   late Database _database;
   List<Map<String, dynamic>> _savedResults = [];
   final TextEditingController _inputController = TextEditingController();
@@ -23,7 +24,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
 
   Future<void> _initializeDatabase() async {
     _database = await openDatabase(
-      join(await getDatabasesPath(), 'lotto_results.db'),
+      join(await getDatabasesPath(), 'lotto_results_649.db'),
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE results(id INTEGER PRIMARY KEY, numbers TEXT)',
@@ -129,10 +130,10 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
     return Scaffold(
         appBar: AppBar(
           title: const Text(
-            '6/42 Lotto Results',
+            '6/49 Lotto Results',
             style: TextStyle(color: Colors.black),
           ),
-          backgroundColor: Colors.teal,
+          backgroundColor: Colors.yellow,
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -358,7 +359,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        AnalysisPage(analysisResult: analysisResult),
+                        SixFortyNineAnalysisPage(analysisResult: analysisResult),
                   ),
                 );
               },

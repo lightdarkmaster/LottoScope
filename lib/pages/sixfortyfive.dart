@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:my_lotto/pages/sixfortytwo_analysis.dart';
+import 'package:my_lotto/pages/sixfortyfive_analysis.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SixFortyFive extends StatefulWidget {
-  const SixFortyFive({super.key});
+class SixFortyFiveHome extends StatefulWidget {
+  const SixFortyFiveHome({super.key});
 
   @override
-  _SixFortyFiveState createState() => _SixFortyFiveState();
+  _SixFortyFiveHomeState createState() => _SixFortyFiveHomeState();
 }
 
-class _SixFortyFiveState extends State<SixFortyFive> {
+class _SixFortyFiveHomeState extends State<SixFortyFiveHome> {
   late Database _database;
   List<Map<String, dynamic>> _savedResults = [];
   final TextEditingController _inputController = TextEditingController();
@@ -23,10 +23,10 @@ class _SixFortyFiveState extends State<SixFortyFive> {
 
   Future<void> _initializeDatabase() async {
     _database = await openDatabase(
-      join(await getDatabasesPath(), 'lotto_results2.db'),
+      join(await getDatabasesPath(), 'lotto_results_645.db'),
       onCreate: (db, version) {
         return db.execute(
-          'CREATE TABLE results(id INTEGER PRIMARY KEY, numbers TEXT)',
+          'CREATE TABLE results(id INTEGER PRIMARY KEY, numbers TEXT)'
         );
       },
       version: 1,
@@ -35,26 +35,19 @@ class _SixFortyFiveState extends State<SixFortyFive> {
   }
 
   Future<void> _saveToDatabase(String numbersString) async {
-    // Insert data into the database and wait for completion
     await _database.insert(
       'results',
       {'numbers': numbersString},
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-
-    // Reload the saved results after saving the data
-    await _loadSavedResults(); // Wait for data reload before calling setState()
-
+    await _loadSavedResults();
     ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-      const SnackBar(content: Text('Lotto numbers saved successfully!')),
+      const SnackBar(content: Text('6/45 Lotto numbers saved successfully!')),
     );
   }
 
   Future<void> _loadSavedResults() async {
-    // Query the saved results from the database
     final results = await _database.query('results');
-
-    // Update the UI with the fetched results by calling setState
     setState(() {
       _savedResults = results;
     });
@@ -87,14 +80,14 @@ class _SixFortyFiveState extends State<SixFortyFive> {
         numbers.every((number) =>
             int.tryParse(number) != null &&
             int.parse(number) >= 1 &&
-            int.parse(number) <= 42)) {
+            int.parse(number) <= 45)) {
       final numbersString = numbers.map((n) => n.padLeft(2, '0')).join(', ');
       _saveToDatabase(numbersString);
       _inputController.clear();
     } else {
       ScaffoldMessenger.of(context as BuildContext).showSnackBar(
         const SnackBar(
-          content: Text('Enter 6/42 Results'),
+          content: Text('Enter 6 valid numbers between 1 and 45'),
         ),
       );
     }
@@ -127,97 +120,110 @@ class _SixFortyFiveState extends State<SixFortyFive> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            '6/42 Lotto Results',
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.teal,
+      appBar: AppBar(
+        title: const Text(
+          '6/45 Lotto Results',
+          style: TextStyle(color: Colors.black),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: _savedResults.isEmpty
-                    ? const Center(child: Text('No saved results.'))
-                    : ListView.builder(
-                        itemCount: _savedResults.length,
-                        itemBuilder: (context, index) {
-                          final result = _savedResults[index];
-                          return Column(
-                            children: [
-                              ListTile(
-                                title: Text(result['numbers']),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.edit,
-                                          color: Colors.blue),
-                                      onPressed: () {
-                                        _inputController.text =
-                                            result['numbers'];
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title: const Text('Edit Result'),
-                                              content: TextField(
-                                                controller: _inputController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                onChanged: _formatInput,
-                                                decoration:
-                                                    const InputDecoration(
-                                                        hintText:
-                                                            'Edit numbers'),
+        backgroundColor: Colors.red,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: _savedResults.isEmpty
+                  ? const Center(child: Text('No saved results.'))
+                  : ListView.builder(
+                      itemCount: _savedResults.length,
+                      itemBuilder: (context, index) {
+                        final result = _savedResults[index];
+                        return Column(
+                          children: [
+                            ListTile(
+                              title: Text(result['numbers']),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.edit, color: Colors.blue),
+                                    onPressed: () {
+                                      _inputController.text = result['numbers'];
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Edit Result'),
+                                            content: TextField(
+                                              controller: _inputController,
+                                              keyboardType: TextInputType.number,
+                                              onChanged: _formatInput,
+                                              decoration: const InputDecoration(
+                                                hintText: 'Edit numbers',
                                               ),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                    _editResult(
-                                                        result['id'],
-                                                        _inputController.text
-                                                            .trim());
-                                                  },
-                                                  child: const Text('Save'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text('Cancel'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.delete,
-                                          color: Colors.red),
-                                      onPressed: () =>
-                                          _deleteResult(result['id']),
-                                    ),
-                                  ],
-                                ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  _editResult(result['id'], _inputController.text.trim());
+                                                },
+                                                child: const Text('Save'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('Cancel'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete, color: Colors.red),
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Confirm Deletion'),
+                                            content: const Text('Are you sure you want to delete this result?'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  _deleteResult(result['id']);
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('Delete'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
-                              const Divider(
-                                height: 1.0,
-                                thickness: 1.0,
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-              ),
-            ],
-          ),
+                            ),
+                            const Divider(height: 1.0, thickness: 1.0),
+                          ],
+                        );
+                      },
+                    ),
+            ),
+          ],
         ),
-        floatingActionButton: Row(
+      ),
+      floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
@@ -305,8 +311,8 @@ class _SixFortyFiveState extends State<SixFortyFive> {
                             e.trim())) // Convert to int and avoid null
                         .where((e) =>
                             e != null &&
-                            e! >= 1 &&
-                            e! <= 42) // Filter out invalid numbers
+                            e >= 1 &&
+                            e <= 42) // Filter out invalid numbers
                         .map((e) =>
                             e!) // Safely unwrap after filtering out nulls
                         .toList();
@@ -328,7 +334,7 @@ class _SixFortyFiveState extends State<SixFortyFive> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        AnalysisPage(analysisResult: analysisResult),
+                        SixFortyFiveAnalysisPage(analysisResult: analysisResult),
                   ),
                 );
               },
