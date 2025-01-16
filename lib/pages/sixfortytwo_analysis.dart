@@ -274,7 +274,7 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
                   final numbers = numbersString
                       .split(',')
                       .map((e) => int.tryParse(e.trim()))
-                      .where((e) => e != null && e! >= 1 && e! <= 42)
+                      .where((e) => e != null && e >= 1 && e <= 42)
                       .map((e) => e!)
                       .toList();
 
@@ -328,3 +328,5 @@ class _SixFortyTwoState extends State<SixFortyTwo> {
     );
   }
 }
+
+//Todo: Arrange Numbers for visualization
