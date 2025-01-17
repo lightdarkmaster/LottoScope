@@ -4,6 +4,14 @@ A simple mobile base application for recording lotto results and lucky number pi
 
 **LottoScope** is a simple and user-friendly app designed to help you record, track, and organize lotto results effortlessly. Whether you're keeping track of your lucky numbers or analyzing past draws, LottoScope has you covered!
 
+# App UI
+<div style="display: flex; justify-content: center; gap: 20px;">
+   <img src="flutter_01.png" alt="Home Screen" width="200px">
+   <img src="flutter_02.png" alt="Notes Screen" width="200px">
+   <img src="flutter_03.png" alt="Calendar Screen" width="200px">
+   <img src="flutter_04.png" alt="Analysis Screen" width="200px">
+</div>
+
 ## Features 🌟
 - 📊 **Record Lotto Results**: Quickly input and save winning numbers from multiple draws.
 - 🔍 **Search & Organize**: Easily search for past results and organize them by date.

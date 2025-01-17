@@ -25,7 +25,7 @@ class SixFortyTwoPage extends StatefulWidget {
 class _SixFortyTwoPageState extends State<SixFortyTwoPage> {
   final SixFortyTwoGenerator _generator = SixFortyTwoGenerator();
   List<String> _generatedNumbers = [];
-  List<List<String>> _recentNumbers = [];
+  final List<List<String>> _recentNumbers = [];
 
   void _generateNumbers() {
     setState(() {
