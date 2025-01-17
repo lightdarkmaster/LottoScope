@@ -34,7 +34,7 @@ class AboutPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Center(
+                      Center(
                         child: CircleAvatar(
                           radius: 60,
                           backgroundImage: AssetImage(

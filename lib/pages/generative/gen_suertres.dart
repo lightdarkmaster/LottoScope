@@ -7,7 +7,7 @@ class Suertres {
 
   List<String> generateNumbers() {
     Set<int> numbers = {};
-    while (numbers.length < 1) {
+    while (numbers.isEmpty) {
       int number = _random.nextInt(999) + 1;
       numbers.add(number);
     }
