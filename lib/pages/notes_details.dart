@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // For formatting the date and time
 
 class NoteDetailPage extends StatelessWidget {
   final String title;
   final String content;
+  final DateTime timeSaved; // Add a DateTime property for time saved
 
   const NoteDetailPage({
     super.key,
     required this.title,
     required this.content,
+    required this.timeSaved,
   });
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width; // Get screen width
+
+    // Format the time saved using intl
+    final formattedTime = DateFormat('yyyy-MM-dd HH:mm').format(timeSaved);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,6 +50,15 @@ class NoteDetailPage extends StatelessWidget {
                       Text(
                         content,
                         style: const TextStyle(fontSize: 16),
+                      ),
+                      const SizedBox(height: 24),
+                      Text(
+                        'Saved on: $formattedTime',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey,
+                        ),
                       ),
                     ],
                   ),

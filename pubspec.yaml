@@ -39,6 +39,7 @@ dependencies:
   sqflite: ^2.3.3+1
   path: ^1.9.0
   fl_chart: ^0.69.2
+  intl: ^0.20.1
 
 dev_dependencies:
   flutter_test:
