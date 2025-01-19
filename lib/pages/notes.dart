@@ -105,6 +105,7 @@ class _NotesPageState extends State<NotesPage> {
                                 builder: (context) => NoteDetailPage(
                                   title: note['title'],
                                   content: note['content'],
+                                  timeSaved: DateTime.now(),
                                 ),
                               ),
                             );
