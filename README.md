@@ -38,3 +38,4 @@ If you encounter any issues or have feedback, feel free to contact us at [suppor
 # Notes:
 1. Some of the dependencies may not available if you try to run this project in the latest flutter version.
 2. Build the Project in the flutter versiob 3.18.1.
+3. Higher version may not be compatible with the core packages in this projects.
