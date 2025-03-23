@@ -34,3 +34,7 @@ If you encounter any issues or have feedback, feel free to contact us at [suppor
 ---
 
 **LottoScope** – Your ultimate companion for recording and tracking lotto results! 🍀
+
+# Notes:
+1. Some of the dependencies may not available if you try to run this project in the latest flutter version.
+2. Build the Project in the flutter versiob 3.18.1.
