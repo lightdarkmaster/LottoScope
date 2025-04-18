@@ -1,0 +1,2 @@
+D:/my_lotto/android/app/.cxx/Debug/5p6z5m54/x86_64/CMakeFiles/edit_cache.dir
+D:/my_lotto/android/app/.cxx/Debug/5p6z5m54/x86_64/CMakeFiles/rebuild_cache.dir
